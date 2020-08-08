@@ -1,0 +1,42 @@
+{
+  "name": "@barktler/driver-mock",
+  "version": "1.0.0",
+  "description": ":neutral_face: Mock Driver",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barktler/Driver-Mock.git"
+  },
+  "keywords": [
+    "API"
+  ],
+  "author": "WMXPY",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/barktler/Driver-Mock/issues"
+  },
+  "homepage": "https://github.com/barktler/Driver-Mock#readme",
+  "dependencies": {
+    "@sudoo/generator": "^1.0.2"
+  },
+  "devDependencies": {
+    "@barktler/driver": "^1.4.0",
+    "@sudoo/io": "^1.8.0",
+    "@sudoo/pattern": "^1.4.0",
+    "@sudoo/triforce": "^2.7.11"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "instrument": true,
+    "reporter": [
+      "json",
+      "text-summary"
+    ],
+    "report-dir": "coverage",
+    "sourceMap": true
+  }
+}
