@@ -7,7 +7,6 @@
 import { IRequestConfig, IResponseConfig, PendingRequest, RequestDriver } from "@barktler/driver";
 import { Generator } from "@sudoo/generator";
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const mockDriver: RequestDriver = <Body extends any = any, Data extends any = any>(request: IRequestConfig<Body>): PendingRequest<Body, Data> => {
 
     if (!request.responseDataPattern) {
@@ -17,6 +16,7 @@ export const mockDriver: RequestDriver = <Body extends any = any, Data extends a
 
     const generator: Generator = Generator.create(request.responseDataPattern);
     const pending: PendingRequest<Body, Data> = PendingRequest.create({
+
         // eslint-disable-next-line @typescript-eslint/require-await
         response: (async (): Promise<IResponseConfig<Data>> => {
 
