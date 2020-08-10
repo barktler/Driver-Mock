@@ -4,11 +4,11 @@
  * @description Driver
  */
 
-import { IRequestConfig, IResponseConfig, RequestDriver } from "@barktler/driver";
+import { IRequestConfig, IResponseConfig, PendingRequest, RequestDriver } from "@barktler/driver";
 import { Generator } from "@sudoo/generator";
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const mockDriver: RequestDriver = async  <Body extends any = any, Data extends any = any>(request: IRequestConfig<Body>): Promise<IResponseConfig<Data>> => {
+export const mockDriver: RequestDriver = <Body extends any = any, Data extends any = any>(request: IRequestConfig<Body>): PendingRequest<Body, Data> => {
 
     if (!request.responseDataPattern) {
 
@@ -16,14 +16,19 @@ export const mockDriver: RequestDriver = async  <Body extends any = any, Data ex
     }
 
     const generator: Generator = Generator.create(request.responseDataPattern);
-    const data: Data = generator.generate();
+    const pending: PendingRequest<Body, Data> = PendingRequest.create({
+        // eslint-disable-next-line @typescript-eslint/require-await
+        response: (async (): Promise<IResponseConfig<Data>> => {
 
-    return {
-
-        data,
-        status: 200,
-        statusText: 'OK',
-
-        headers: {},
-    };
+            const data: Data = generator.generate();
+            return {
+                data,
+                status: 200,
+                statusText: 'OK',
+                headers: {},
+            };
+        })(),
+        abort: () => undefined,
+    });
+    return pending;
 };
