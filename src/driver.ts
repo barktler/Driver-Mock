@@ -8,11 +8,15 @@ import { IRequestConfig, IResponseConfig, PendingRequest, RequestDriver } from "
 import { Generator } from "@sudoo/generator";
 
 export type MockDriverOptions = {
+
+    readonly mockResponseData: boolean;
 };
 
 export const createMockDriver = (options: Partial<MockDriverOptions>): RequestDriver => {
 
     const mergedOptions: MockDriverOptions = {
+
+        mockResponseData: false,
         ...options,
     };
 
@@ -28,9 +32,19 @@ export const createMockDriver = (options: Partial<MockDriverOptions>): RequestDr
 
             response: (async (): Promise<IResponseConfig<Data>> => {
 
-                const data: Data = generator.generate();
+                if (mergedOptions) {
+
+                    const data: Data = generator.generate();
+                    return await Promise.resolve({
+                        data,
+                        status: 200,
+                        statusText: 'OK',
+                        headers: {},
+                    });
+                }
+
                 return await Promise.resolve({
-                    data,
+                    data: undefined as any,
                     status: 200,
                     statusText: 'OK',
                     headers: {},
