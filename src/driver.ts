@@ -7,28 +7,33 @@
 import { IRequestConfig, IResponseConfig, PendingRequest, RequestDriver } from "@barktler/driver";
 import { Generator } from "@sudoo/generator";
 
-export const mockDriver: RequestDriver = <Body extends any = any, Data extends any = any>(request: IRequestConfig<Body>): PendingRequest<Body, Data> => {
+export const createMockDriver = (): RequestDriver => {
 
-    if (!request.responseDataPattern) {
+    const mockDriver: RequestDriver = <Body extends any = any, Data extends any = any>(request: IRequestConfig<Body>): PendingRequest<Body, Data> => {
 
-        throw new Error('[Barktler] Response data pattern not declared');
-    }
+        if (!request.responseDataPattern) {
 
-    const generator: Generator = Generator.create(request.responseDataPattern);
-    const pending: PendingRequest<Body, Data> = PendingRequest.create({
+            throw new Error('[Barktler] Response data pattern not declared');
+        }
 
-        // eslint-disable-next-line @typescript-eslint/require-await
-        response: (async (): Promise<IResponseConfig<Data>> => {
+        const generator: Generator = Generator.create(request.responseDataPattern);
+        const pending: PendingRequest<Body, Data> = PendingRequest.create({
 
-            const data: Data = generator.generate();
-            return {
-                data,
-                status: 200,
-                statusText: 'OK',
-                headers: {},
-            };
-        })(),
-        abort: () => undefined,
-    });
-    return pending;
+            // eslint-disable-next-line @typescript-eslint/require-await
+            response: (async (): Promise<IResponseConfig<Data>> => {
+
+                const data: Data = generator.generate();
+                return {
+                    data,
+                    status: 200,
+                    statusText: 'OK',
+                    headers: {},
+                };
+            })(),
+            abort: () => undefined,
+        });
+        return pending;
+    };
+
+    return mockDriver;
 };
