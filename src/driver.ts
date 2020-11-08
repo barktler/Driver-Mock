@@ -7,7 +7,14 @@
 import { IRequestConfig, IResponseConfig, PendingRequest, RequestDriver } from "@barktler/driver";
 import { Generator } from "@sudoo/generator";
 
-export const createMockDriver = (): RequestDriver => {
+export type MockDriverOptions = {
+};
+
+export const createMockDriver = (options: Partial<MockDriverOptions>): RequestDriver => {
+
+    const mergedOptions: MockDriverOptions = {
+        ...options,
+    };
 
     const mockDriver: RequestDriver = <Body extends any = any, Data extends any = any>(request: IRequestConfig<Body>): PendingRequest<Body, Data> => {
 
