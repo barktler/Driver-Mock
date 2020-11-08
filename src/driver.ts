@@ -26,16 +26,15 @@ export const createMockDriver = (options: Partial<MockDriverOptions>): RequestDr
         const generator: Generator = Generator.create(request.responseDataPattern);
         const pending: PendingRequest<Body, Data> = PendingRequest.create({
 
-            // eslint-disable-next-line @typescript-eslint/require-await
             response: (async (): Promise<IResponseConfig<Data>> => {
 
                 const data: Data = generator.generate();
-                return {
+                return await Promise.resolve({
                     data,
                     status: 200,
                     statusText: 'OK',
                     headers: {},
-                };
+                });
             })(),
             abort: () => undefined,
         });
