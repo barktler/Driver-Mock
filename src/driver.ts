@@ -22,7 +22,6 @@ export const createMockDriver = (options: Partial<MockDriverOptions>): RequestDr
 
     const mockDriver: RequestDriver = <Body extends any = any, Data extends any = any>(request: IRequestConfig<Body>): PendingRequest<Body, Data> => {
 
-        const generator: Generator = Generator.create(request.responseDataPattern);
         const pending: PendingRequest<Body, Data> = PendingRequest.create({
 
             response: (async (): Promise<IResponseConfig<Data>> => {
@@ -34,6 +33,7 @@ export const createMockDriver = (options: Partial<MockDriverOptions>): RequestDr
                         throw new Error('[Barktler] Response data pattern not declared');
                     }
 
+                    const generator: Generator = Generator.create(request.responseDataPattern);
                     const data: Data = generator.generate();
                     return await Promise.resolve({
                         data,
