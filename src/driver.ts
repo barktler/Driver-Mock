@@ -12,7 +12,7 @@ export type MockDriverOptions = {
     readonly mockResponseData: boolean;
 };
 
-export const createMockDriver = (options: Partial<MockDriverOptions>): RequestDriver => {
+export const createMockDriver = (options: Partial<MockDriverOptions> = {}): RequestDriver => {
 
     const mergedOptions: MockDriverOptions = {
 
