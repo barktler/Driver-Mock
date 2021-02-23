@@ -35,7 +35,9 @@ export const createMockDriver = (options: Partial<MockDriverOptions> = {}): Requ
 
                     const generator: Generator = Generator.create(request.responseDataPattern);
                     const data: Data = generator.generate();
-                    return await Promise.resolve({
+                    return Promise.resolve({
+
+                        succeed: true,
                         data,
                         status: 200,
                         statusText: 'OK',
@@ -43,7 +45,9 @@ export const createMockDriver = (options: Partial<MockDriverOptions> = {}): Requ
                     });
                 }
 
-                return await Promise.resolve({
+                return Promise.resolve({
+
+                    succeed: true,
                     data: undefined as any,
                     status: 200,
                     statusText: 'OK',
